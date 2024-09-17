@@ -19,7 +19,7 @@ class GuestController extends Controller
     public function create(GuestCreateRequest $request, GuestService $guestService)
     {
         if ($guest = $guestService->create($request->validated())) {
-            return $this->response(['result' => $guest]);
+            return $this->response($guest);
         }
         return $this->response(['error' => 'Guest not created'], 500);
     }
