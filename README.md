@@ -1,66 +1,53 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+cp .env.example .env
+docker compose up -d --build
+docker compose exec app composer install
+docker compose exec app php artisan migrate
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Список эндпоинтов:
+* GET: /guests - список гостей
+```
+curl --location 'http://localhost:8000/guests' \
+--header 'Cookie: XSRF-TOKEN=eyJpdiI6IkxYVlhIanBNZThPTk1zNHpwck43L0E9PSIsInZhbHVlIjoidDRicXFMUUVkN0hEZmtKMENzTENQZjh5LytJbUhSeEVRT1hvOWFCdzhPZWFINklQWjkvUWdGcXV2a1VOcmF0cHhZUE1jRmVOWElOd3RBdzRUZXVJT2U1TFlpSHpXVjhSTTZhZUlPblYzSytnNjZnWEppZkxDY09ROE93Q0lNYmIiLCJtYWMiOiIxZTU4N2IxNjFmOWNiNjRkMGJjZDU2MzcyZTQxOWQ5YTZkYjZhMzE4MWJkYjczZTQxYWFhYTQ0MTYxYzgzODQ3IiwidGFnIjoiIn0%3D; bnovo_session=eyJpdiI6ImcydmpBa3BjZjBzSGs5eWpyem5qbXc9PSIsInZhbHVlIjoiKytwdVpMT2ZUR1dDV1R4NURwblcyUnNrc05idnpKNUlteFNyakc3bUJhZ2ViZVU0bG81ZmJGWllQV3FndjJ4bzBSNVgzOW1KandmLzFXa0t2Sjl6cGdoN1ZNTTIvRHBuelVkdTJWQXhpU1JSa0lEQndaTGYxSFNTV0l5VExZaW4iLCJtYWMiOiJlNGQwNWM2N2M4NTRhMWZmY2U3ZTYzODU5NjllY2NlMTYyMDBmNWE2MjJiMTMwMTU5ZDIwODViYTdmMGRhOWI5IiwidGFnIjoiIn0%3D'
+```
 
-## About Laravel
+* POST: /guests/create - Добавление гостя
+```
+curl --location 'http://localhost:8000/guests/create' \
+--header 'Cookie: XSRF-TOKEN=eyJpdiI6Ind3L2RVZEhOWnJmaG0xWTEvdDk4ZVE9PSIsInZhbHVlIjoiVGpCZndPOXF3Y3NSZGphOGtsU1NVcmRtSlRjbE1LWEFrdENMVDhQelhJNThmc1V6OVA2MForT1YycjRDMjUwdmZBZ3BGNW01WEEyQVkyR0NaWnlhQWdRL2R6N0lZY2Yzbmd4alMwTkJkM3pMdnVHTWhvdmdJeDB0UmtNa2FCNXciLCJtYWMiOiJhYjM5YWRkZjQ4Y2FkNDRlNzE0MmYwZTllZTY5ODZiZTE3OWNlYzRiODNlOThiOTRiMjI4NDQ4ODc0MTk0Y2I0IiwidGFnIjoiIn0%3D; bnovo_session=eyJpdiI6IlJ0N3ZWOUJ5Yk96L1IrQVZZWFR2cXc9PSIsInZhbHVlIjoiaHlubXNwMkVybTZTSGhFZHRmSHdJVkd4WFhkMTR5Yjh3RXdHTlQzUGNMeEpSYll0QThLbDhobFNKTGVXZGlibkx6OEF0THBvQzdqa2NtWGxva2lGVklTVVFhbEliUFBSQ1l0bGsrYVcyL0pSOURBWTZxazRKNlZ1bjlSVGVFaHMiLCJtYWMiOiJhZDBhOGVlZmRmZjUxODc1YmRhMjU1N2U4NGJjYmYyNTBiMTY2YzE2ZDMxYTY5NWVmODEzYmVmY2M3MTY4NmZhIiwidGFnIjoiIn0%3D' \
+--form 'email="aravion1@gmail.com"' \
+--form 'name="Владислав"' \
+--form 'sername="Фомин"' \
+--form 'phone="+79994645396"' \
+--form 'country="Англия"'
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* PATCH: /guests/{id} - обновление гостя
+```
+curl --location --request PATCH 'http://localhost:8000/guests/2' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: XSRF-TOKEN=eyJpdiI6Im5sVlJDODdnRUhlbEIvQnZBSnFxUXc9PSIsInZhbHVlIjoia01XNVQyRFlJVzFOVGY4VmZIWEVaRmF3QlJMdkUxSmZMQUFTWnNrY1gweFd2a3h5WFQ0UHQwbGVjKzFIUzdHUi90Y25wTWhsR1RtbkhCTW9XQmp0RzRUK2o5cklBdDU3OC9pNzRCcWNjVGJaREM2c0VranNqT2Z2dU4rNlgxQWMiLCJtYWMiOiJhMjE4Mjc2MzQ4ODVmYTYwMTE2ZWEyNzQ0NzZmNGNmMzk2OWUyOGM4YTY1Zjk2NmU3MjE2YTlmMzYwZmI0ZmIxIiwidGFnIjoiIn0%3D; bnovo_session=eyJpdiI6IlNLT0JhUEdaNUlsMlNqZkU5Tzhtd3c9PSIsInZhbHVlIjoiRWIwWmdvdzBzRmMxeTA5MERsdUEvOHR0ZXlqV3RIZ0dMZ1orSXBuczZUSFdTMHFPeGdXbmJXZ0tqbkdkb3dBZ0laQ2hDaWM3RjNINjJ6c2sxM3lTaEJ3a0p0Ylg2ZHJtUDdmUTdVVzlidzRiZUdpR0YzY2tVcS92dGo1OWJFaHgiLCJtYWMiOiI5NTNiMDQ0ZTAzNmIwZjcwN2Y5NGYxODkxZTg4MjEwODFmNGNlMjA5ZjBhYmZhNjVhZDMxMjA2OTdlMjg0NmJjIiwidGFnIjoiIn0%3D' \
+--data '{
+    "name": "Григорийq"
+}'
+```
+* DELETE: /guests/{id} - удаление гостя
+```
+curl --location --request DELETE 'http://localhost:8000/guests/1' \
+--header 'Cookie: XSRF-TOKEN=eyJpdiI6Im43T25pUHNVcGxNd1g2dGRtRHViL1E9PSIsInZhbHVlIjoiZHhQMUxiRFNZVUJ5dDhNejQ0UTJxUm0xaWh0QkNXY1l1eENxSys0aDJrK0VHQk54NGFlenZJK2p2NFBXT1haakRNa0RLSWFUTHF0a1VWK3U2WllEWGNNYVlUN2daK3ZPNlF3Snp4UzEwLzVjem42V1hLVmQwUTJGK0J3NDRWSXEiLCJtYWMiOiIyZmE4MzY5M2Q3OWEyODk4YWFiMTI2MGY3ZDY1NmZkZWI1MzQ2ZThmZDc3YThmOTYyN2RjMzlmMmM1ZmE5ZWEyIiwidGFnIjoiIn0%3D; bnovo_session=eyJpdiI6Im5QVGkwM2Z3TjcxUWJDQWd3KzZnZUE9PSIsInZhbHVlIjoiUEVMNW1ITGtrUmZPcEZ6SjNzT2pONWVFRjNadko2MHZNOWVncFIzQlZLaUlLV1pwK3lzMG01VGJJMHV1Vmo5UkJTWURJZEZIVEdONXhBUS9RTHVFdVUzS2I4Y244R2VjSnFnWFBZYit2b2lwU1ZqRTdyekdZeVhFY0ZmSDl4S0UiLCJtYWMiOiJjYWM5M2E3M2ZiOTBiZjY5NWVmM2E5NjI5MjA0MTc4MmI1NzY5NTU3YzViZTQzODUyYjAzNjA5MzIzYWE2NGQ3IiwidGFnIjoiIn0%3D'
+```
+* GET: /guests/{id} - получение гостя по ID
+```
+curl --location 'http://localhost:8000/guests/1' \
+--header 'Cookie: XSRF-TOKEN=eyJpdiI6Ikh1a1VOb1FRRkxndldTeERsc3gvV0E9PSIsInZhbHVlIjoiV0xWc2Y3SlhBV2lxbGw1WkZwVlFkYW54dEZaNHZtWExheStxcllLRlJDdGhkOXduU0JiQWpqcHdjeVdxSFk2YUhVcEhWL2drQ3Jad1ZyOE0wVEFzakdTTm9qZ3RGYmJKLzBUekpXRzdzMHAwN3F1SExudER4M1BZaFA5QnU0cFAiLCJtYWMiOiI2Y2QxMjI4MDBiYTBlMmRkZWM0ZDJlMmNjMWYzMGEwNWY2NWFmZGJmMzA0MTE4YmNhNWZkZWUwMWNiZjYwN2JmIiwidGFnIjoiIn0%3D; bnovo_session=eyJpdiI6ImdwQ0plWlE3eldwZUF6T2dTb1hFeXc9PSIsInZhbHVlIjoiNHNwM1QxWlcrQjJBWmduWGxacDkvczlHOFN5RkFIdDc3cWppeFNGMld6aVgvVHlKOWtYb2xpYmFEZ1l6aXVETXdkMnk4NVQwTUVRTlg2SHlqblRrTUNHakY1ZDVndXcwYXRyYVFLZkdQUk9JT3V3OTdBVVJIS0RkOFdGTTFOTWIiLCJtYWMiOiJjMTIwMWJkMjEwZDE5OTJhNDMxNjYyMTUyMjY2MDEzN2I4NTZmYmM3NTY4ZDE5Y2Y1Y2M1ZDMyZWI5MjMwMmE4IiwidGFnIjoiIn0%3D'
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+На задание ушли расхлябанные 2 часа (Отвлекался и прочее)
+Что я бы улучшил:
+* нормализовал базу (Помогло бы оптимизировать память - страны имена и фамилии разнес бы по таблицам)
+* Добавил бы токен и middleware
+* Проработал бы получше валидацию, сделал бы регулярку на проверку разных форматов телефонов
+* Вынес бы volume базы в отдельную папку, чтобы была возможность не терять данные при какой либо проблеме с контейнером
+* автоматизировать выполнение миграций и composer update
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Не стал делать, так как по большей части это просто испытательное ТЗ а не продуктовая фича.
